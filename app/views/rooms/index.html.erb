@@ -14,11 +14,16 @@
   <tbody>
     <% @rooms.each do |room| %>
       <tr>
-        <td><%= 'room.user' %></td>
+        <td><%= room.user.email %></td>
         <td><%= room.title %></td>
         <td><%= link_to 'Show', room %></td>
-        <td><%= link_to 'Edit', edit_room_path(room) %></td>
-        <td><%= link_to 'Destroy', room, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <% if current_user %>
+          <% if room.user_id == current_user.id %>
+          <td><%= link_to 'Edit', edit_room_path(room) %></td>
+          <td><%= link_to 'Destroy', room, method: :delete, data: { 
+                           confirm: 'Are you sure?' } %></td>
+          <% end %>
+        <% end %>
       </tr>
     <% end %>
   </tbody>
