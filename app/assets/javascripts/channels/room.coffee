@@ -1,18 +1,24 @@
 $(document).on 'turbolinks:load', ->
-  room_id = $('#messages').data('room-id')
-  App.room = App.cable.subscriptions.create {
-    channel: "RoomChannel", 
-    room_id: room_id 
-  },
-  connected: ->
-    # Called when the subscription is ready for use on the server
-  disconnected: ->
-    # Called when the subscription has been terminated by the server
-  received: (data) ->
-    $('#messages').append data['message']
-    # Called when there's incoming data on the websocket for this channel
-  speak: (message, room_id) ->
-    @perform 'speak', message: message, room_id: room_id
+  if $('#messages').length > 0
+    messages = $('#messages')
+    messages_to_bottom = -> messages.scrollTop(messages.prop("scrollHeight"))
+    messages_to_bottom()
+
+    room_id = $('#messages').data('room-id')
+    App.room = App.cable.subscriptions.create {
+      channel: "RoomChannel", 
+      room_id: room_id 
+    },
+    connected: ->
+      # Called when the subscription is ready for use on the server
+    disconnected: ->
+      # Called when the subscription has been terminated by the server
+    received: (data) ->
+      $('#messages').append data['message']
+      messages_to_bottom()
+      # Called when there's incoming data on the websocket for this channel
+    speak: (message, room_id) ->
+      @perform 'speak', message: message, room_id: room_id
  
 $(document).on 'keypress', '[data-behavior~=room_speaker]', (event) ->
   room_id = $('#messages').data('room-id')
