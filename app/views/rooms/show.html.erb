@@ -2,13 +2,22 @@
 
 <p>
   <strong>User:</strong>
-  <%= '@room.user' %>
+  <%= @room.user.email %>
 </p>
 
 <p>
   <strong>Title:</strong>
   <%= @room.title %>
 </p>
+
+<div id="messages" data-room-id="<%= @room.id %>">>
+  <%= render @room.messages %>
+</div>
+  
+<form>
+  <label>Say something:</label><br>
+  <input type="text" data-behavior="room_speaker">
+</form>
 
 <%= link_to 'Edit', edit_room_path(@room) %> |
 <%= link_to 'Back', rooms_path %>

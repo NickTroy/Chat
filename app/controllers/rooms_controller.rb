@@ -10,6 +10,8 @@ class RoomsController < ApplicationController
   # GET /rooms/1
   # GET /rooms/1.json
   def show
+    @messages = Message.where(room_id: @room.id)
+    @message = Message.new
   end
 
   # GET /rooms/new
